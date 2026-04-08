@@ -1,0 +1,30 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect all requests to the public directory
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+# Prevent directory browsing
+Options -Indexes
+
+# Protect sensitive files and directories
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect important files
+<FilesMatch "(^composer\.(json|lock)|^package\.(json|lock)|^\.env|^artisan|^\.git|^\.gitignore|^\.gitattributes|^README\.md|^CHANGELOG\.md|^LICENSE|^\.editorconfig|^\.styleci\.yml|^\.php_cs|^\.php_cs\.dist|^\.phpunit\.result\.cache|^\.env\.example|^\.env\.backup|^\.phpstorm\.meta\.php|^\.idea|^\.vscode|^\.DS_Store|^Thumbs\.db)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect directories
+<IfModule mod_rewrite.c>
+    RewriteRule ^(app|bootstrap|config|database|resources|routes|storage|tests|vendor)/ - [F,L]
+</IfModule>
+
+
+
